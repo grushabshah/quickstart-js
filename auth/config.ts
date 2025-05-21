@@ -10,3 +10,5 @@ export const firebaseConfig = {
   appId: 'APP_ID',
   measurementId: 'G-MEASUREMENT_ID',
 };
+
+export const reCaptchaSiteKey = "RECAPTCHA_SITE_KEY"
