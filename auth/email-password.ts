@@ -1,19 +1,37 @@
 import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
+
 import {
   connectAuthEmulator,
   createUserWithEmailAndPassword,
   getAuth,
+  initializeRecaptchaConfig,
   onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { firebaseConfig } from './config';
+import { firebaseConfig, reCaptchaSiteKey } from './config';
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
+// Initialize App Check
+initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(reCaptchaSiteKey),
+  // Optional: set to true if you want to allow App Check to run on unsupported browsers
+  isTokenAutoRefreshEnabled: true
+});
 
 const auth = getAuth();
+
+initializeRecaptchaConfig(auth)
+  .then(() => {
+    console.log("Recaptcha Enterprise Config Initialization successful.")
+  })
+  .catch((error) => {
+    console.error("Recaptcha Enterprise Config Initialization failed with " + error)
+  });
 
 if (window.location.hostname === 'localhost') {
   connectAuthEmulator(auth, 'http://127.0.0.1:9099');
