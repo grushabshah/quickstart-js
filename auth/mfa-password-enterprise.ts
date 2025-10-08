@@ -45,6 +45,13 @@ import {
 } from 'firebase/auth';
 import { firebaseConfig, reCaptchaSiteKey } from './config';
 
+// Dynamically load the reCAPTCHA enterprise script
+const script = document.createElement('script');
+script.src = `https://www.google.com/recaptcha/enterprise.js?render=${reCaptchaSiteKey}`;
+script.async = true;
+script.defer = true;
+document.head.appendChild(script);
+
 const app = initializeApp(firebaseConfig);
 
 // Initialize App Check
